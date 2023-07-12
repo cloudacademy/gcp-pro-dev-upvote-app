@@ -26,3 +26,18 @@ spec:
         ports:
         - name: frontend
           containerPort: 3000
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: votes-api
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 3000
+    targetPort: 3000
+    protocol: TCP
+  selector:
+    app: votes-api
+    role: backend
