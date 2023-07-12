@@ -5,7 +5,7 @@ steps:
     - -cx
     - |
         API_INGRESS=$(gcloud compute forwarding-rules list --format="value(IPAddress)")
-        sed -i "s/{API_INGRESS}/${API_INGRESS}/g" .env
+        sed -i "s/{API_INGRESS}/$$API_INGRESS/g" .env
 - name: gcr.io/cloud-builders/docker
   entrypoint: bash
   args: 
