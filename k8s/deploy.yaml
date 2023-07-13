@@ -30,7 +30,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: votes-app
+  name: upvote-app
 spec:
   type: ClusterIP
   ports:
@@ -39,5 +39,5 @@ spec:
     targetPort: 3000
     protocol: TCP
   selector:
-    app: votes-app
+    app: upvote-app
     role: frontend
