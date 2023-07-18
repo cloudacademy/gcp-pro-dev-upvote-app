@@ -1,11 +1,4 @@
 steps:
-- name: gcr.io/cloud-builders/gcloud
-  entrypoint: bash
-  args: 
-    - -cx
-    - |
-        API_INGRESS=$(gcloud compute forwarding-rules list --format="value(IPAddress)")
-        sed -i "s/{API_INGRESS}/$$API_INGRESS/g" .env
 - name: gcr.io/cloud-builders/docker
   entrypoint: bash
   args: 
@@ -28,5 +21,6 @@ steps:
     - |
         gcloud container clusters get-credentials "${_CLUSTER}" --project "${PROJECT_ID}" --zone "${_ZONE}"  
         sed -i "s|${_REGION}-docker.pkg.dev/PROJECT_ID/{_REPOSITORY}/{_SERVICE_NAME}:.*|${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/${_SERVICE_NAME}:${SHORT_SHA}|" k8s/deploy.yaml
+        while ! kubectl get nodes ; do sleep 1; done
         kubectl get ns ${_REPOSITORY} || kubectl create ns ${_REPOSITORY}
         kubectl apply --namespace ${_REPOSITORY} -f k8s/deploy.yaml
